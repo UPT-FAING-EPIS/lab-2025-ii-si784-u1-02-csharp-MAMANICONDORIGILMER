@@ -1,0 +1,34 @@
+### YamlMime:TableOfContent
+items:
+- uid: Bank.Domain.Models
+  name: Bank.Domain.Models
+  type: Namespace
+  items:
+  - uid: Bank.Domain.Models.BankAccount
+    name: BankAccount
+    type: Class
+- uid: Bank.Domain.Tests
+  name: Bank.Domain.Tests
+  type: Namespace
+  items:
+  - uid: Bank.Domain.Tests.BankAccountTests
+    name: BankAccountTests
+    type: Class
+- uid: Bank.WebApi.Models
+  name: Bank.WebApi.Models
+  type: Namespace
+  items:
+  - uid: Bank.WebApi.Models.BankAccount
+    name: BankAccount
+    type: Class
+- uid: Bank.WebApi.Tests
+  name: Bank.WebApi.Tests
+  type: Namespace
+  items:
+  - uid: Bank.WebApi.Tests.BankAccountTests
+    name: BankAccountTests
+    type: Class
+  - uid: Bank.WebApi.Tests.Test1
+    name: Test1
+    type: Class
+memberLayout: SamePage

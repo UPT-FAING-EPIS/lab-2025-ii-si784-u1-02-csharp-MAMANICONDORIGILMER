@@ -1,0 +1,75 @@
+name: Snyk Analysis
+env:
+  DOTNET_VERSION: '8.x'                     # la versión de .NET
+on: 
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup Snyk
+        uses: snyk/actions/setup@master
+        
+      - name: Configurando la versión de NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          
+      - name: Setup Node.js for snyk-to-html
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Install snyk-to-html
+        run: npm install -g snyk-to-html
+        
+      - name: Restore dependencies
+        run: dotnet restore bank/Bank.sln
+          
+      - name: Build solution
+        run: dotnet build bank/Bank.sln --no-restore
+          
+      - name: Snyk Code Test
+        working-directory: bank
+        run: snyk code test --json | snyk-to-html -o snyk-code-results.html
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        continue-on-error: true
+          
+      - name: Snyk monitor
+        working-directory: bank
+        run: snyk code test --sarif-file-output=snyk.sarif
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        continue-on-error: true
+          
+      - name: Check SARIF file
+        working-directory: bank
+        run: |
+          if [ -f "snyk.sarif" ]; then
+            echo "✅ SARIF file generated successfully"
+            ls -la snyk.sarif
+          else
+            echo "❌ SARIF file not found"
+          fi
+          
+      - name: Upload Snyk HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: snyk-code-report
+          path: bank/snyk-code-results.html
+          retention-days: 30
+          
+      - name: Upload result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: bank/snyk.sarif
+        if: always() && hashFiles('bank/snyk.sarif') != ''

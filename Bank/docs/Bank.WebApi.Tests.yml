@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: Bank.WebApi.Tests
+  commentId: N:Bank.WebApi.Tests
+  id: Bank.WebApi.Tests
+  children:
+  - Bank.WebApi.Tests.BankAccountTests
+  - Bank.WebApi.Tests.Test1
+  langs:
+  - csharp
+  - vb
+  name: Bank.WebApi.Tests
+  nameWithType: Bank.WebApi.Tests
+  fullName: Bank.WebApi.Tests
+  type: Namespace
+  assemblies:
+  - Bank.WebApi.Tests
+references:
+- uid: Bank.WebApi.Tests.BankAccountTests
+  commentId: T:Bank.WebApi.Tests.BankAccountTests
+  href: Bank.WebApi.Tests.BankAccountTests.html
+  name: BankAccountTests
+  nameWithType: BankAccountTests
+  fullName: Bank.WebApi.Tests.BankAccountTests
+- uid: Bank.WebApi.Tests.Test1
+  commentId: T:Bank.WebApi.Tests.Test1
+  href: Bank.WebApi.Tests.Test1.html
+  name: Test1
+  nameWithType: Test1
+  fullName: Bank.WebApi.Tests.Test1

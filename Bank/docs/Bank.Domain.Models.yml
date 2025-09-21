@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: Bank.Domain.Models
+  commentId: N:Bank.Domain.Models
+  id: Bank.Domain.Models
+  children:
+  - Bank.Domain.Models.BankAccount
+  langs:
+  - csharp
+  - vb
+  name: Bank.Domain.Models
+  nameWithType: Bank.Domain.Models
+  fullName: Bank.Domain.Models
+  type: Namespace
+  assemblies:
+  - Bank.Domain
+references:
+- uid: Bank.Domain.Models.BankAccount
+  commentId: T:Bank.Domain.Models.BankAccount
+  href: Bank.Domain.Models.BankAccount.html
+  name: BankAccount
+  nameWithType: BankAccount
+  fullName: Bank.Domain.Models.BankAccount

@@ -1,0 +1,26 @@
+test-and-package
+
+Run dotnet pack bank/Bank.Domain/Bank.Domain.csproj --no-build --configuration Release --output ./bank/nupkg
+  dotnet pack bank/Bank.Domain/Bank.Domain.csproj --no-build --configuration Release --output ./bank/nupkg
+  shell: /usr/bin/bash -e {0}
+  env:
+    DOTNET_VERSION: 8.x
+    SONAR_ORG: upt-faing-epis
+    SONAR_PROJECT: UPT-FAING-EPIS_lab-2025-ii-si784-u1-02-csharp-KrCrimson
+    DOTNET_ROOT: /usr/share/dotnet
+Error: /usr/share/dotnet/sdk/8.0.414/Sdks/NuGet.Build.Tasks.Pack/build/NuGet.Build.Tasks.Pack.targets(221,5): error NU5026: The file '/home/runner/work/lab-2025-ii-si784-u1-02-csharp-KrCrimson/lab-2025-ii-si784-u1-02-csharp-KrCrimson/bank/Bank.Domain/bin/Release/net8.0/Bank.Domain.dll' to be packed was not found on disk. [/home/runner/work/lab-2025-ii-si784-u1-02-csharp-KrCrimson/lab-2025-ii-si784-u1-02-csharp-KrCrimson/bank/Bank.Domain/Bank.Domain.csproj]
+Error: Process completed with exit code 1.
+
+build-docs
+
+Run actions/configure-pages@v4
+  with:
+    token: ***
+    enablement: false
+  env:
+    DOTNET_ROOT: /usr/share/dotnet
+Error: Get Pages site failed. Please verify that the repository has Pages enabled and configured to build using GitHub Actions, or consider exploring the `enablement` parameter for this action.
+Error: HttpError: Not Found
+
+
+Publish Documentation / deploy (push) Skipped

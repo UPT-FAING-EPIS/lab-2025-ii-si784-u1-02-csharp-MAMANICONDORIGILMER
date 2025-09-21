@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: Bank.Domain.Tests
+  commentId: N:Bank.Domain.Tests
+  id: Bank.Domain.Tests
+  children:
+  - Bank.Domain.Tests.BankAccountTests
+  langs:
+  - csharp
+  - vb
+  name: Bank.Domain.Tests
+  nameWithType: Bank.Domain.Tests
+  fullName: Bank.Domain.Tests
+  type: Namespace
+  assemblies:
+  - Bank.Domain.Tests
+references:
+- uid: Bank.Domain.Tests.BankAccountTests
+  commentId: T:Bank.Domain.Tests.BankAccountTests
+  href: Bank.Domain.Tests.BankAccountTests.html
+  name: BankAccountTests
+  nameWithType: BankAccountTests
+  fullName: Bank.Domain.Tests.BankAccountTests

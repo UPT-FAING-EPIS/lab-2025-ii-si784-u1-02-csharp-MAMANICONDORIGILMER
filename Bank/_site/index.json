@@ -1,0 +1,77 @@
+{
+  "Cobertura/SummaryGithub.html": {
+    "href": "Cobertura/SummaryGithub.html",
+    "title": "Summary | Bank App",
+    "summary": "Summary Summary Generated on: 13/9/2025 - 1:31:46 p. m. Coverage date: 12/9/2025 - 9:26:29 p. m. - 13/9/2025 - 1:31:39 p. m. Parser: MultiReport (3x Cobertura) Assemblies: 2 Classes: 4 Files: 3 Line coverage: 47.1% (33 of 70) Covered lines: 33 Uncovered lines: 37 Coverable lines: 70 Total lines: 101 Branch coverage: 50% (11 of 22) Covered branches: 11 Total branches: 22 Method coverage: Feature is only available for sponsors Coverage Bank.Domain - 100% Name Line Branch Bank.Domain 100% 75% Bank.Domain.Models.BankAccount 100% 75% Bank.WebApi - 22.9% Name Line Branch Bank.WebApi 22.9% 20% Bank.WebApi.Models.BankAccount 55% 33.3% Program 0% 0% WeatherForecast 0%"
+  },
+  "README.html": {
+    "href": "README.html",
+    "title": "SESION DE LABORATORIO N° 01: PRUEBAS ESTATICAS DE SEGURIDAD DE APLICACIONES CON SONARQUBE | Bank App",
+    "summary": "SESION DE LABORATORIO N° 01: PRUEBAS ESTATICAS DE SEGURIDAD DE APLICACIONES CON SONARQUBE OBJETIVOS Comprender el funcionamiento de las pruebas estaticas de seguridad de còdigo de las aplicaciones que desarrollamos utilizando SonarQube. REQUERIMIENTOS Conocimientos: Conocimientos básicos de Bash (powershell). Conocimientos básicos de Contenedores (Docker). Hardware: Virtualization activada en el BIOS.. CPU SLAT-capable feature. Al menos 4GB de RAM. Software: Windows 10 64bit: Pro, Enterprise o Education (1607 Anniversary Update, Build 14393 o Superior) Docker Desktop Powershell versión 7.x Net 8 o superior Visual Studio Code CONSIDERACIONES INICIALES Clonar el repositorio mediante git para tener los recursos necesarios Tener una cuenta de Github valida. DESARROLLO Parte I: Configuración de la herramienta de Pruebas Estaticas de Seguridad de la Aplicación Ingrear a la pagina de SonarCloud (https://www.sonarsource.com/products/sonarcloud/), iniciar sesión con su cuenta de Github. Ingresar a la opción My Account Generar un nuevo token con el nombre que desee, luego de generar el token, guarde el resultado en algún archivo o aplicación de notas. Debido a que se utilizará En el navegador, ingresar a la url https://sonarcloud.io/projects/create, para generar un nuevo proyecto con el nombre apibank, apunte el nombre del Project Key, que se utilizara mas adelante, luego dar click en el boton next. En el navegador, finalizar la creación del proyecto, haciendo click en la opción Previous Version, y luego en el boton Create Project Parte II: Creación de la aplicación Iniciar la aplicación Powershell o Windows Terminal en modo administrador Ejecutar el siguiente comando para crear una nueva solución dotnet new sln -o Bank Acceder a la solución creada y ejecutar el siguiente comando para crear una nueva libreria de clases y adicionarla a la solución actual. cd Bank dotnet new classlib -o Bank.Domain dotnet sln add ./Bank.Domain/Bank.Domain.csproj Ejecutar el siguiente comando para crear un nuevo proyecto de pruebas y adicionarla a la solución actual dotnet new mstest -o Bank.Domain.Tests dotnet sln add ./Bank.Domain.Tests/Bank.Domain.Tests.csproj dotnet add ./Bank.Domain.Tests/Bank.Domain.Tests.csproj reference ./Bank.Domain/Bank.Domain.csproj Iniciar Visual Studio Code (VS Code) abriendo el folder de la solución como proyecto. En el proyecto Bank.Domain, si existe un archivo Class1.cs proceder a eliminarlo. Asimismo en el proyecto Bank.Domain.Tests si existiese un archivo UnitTest1.cs, también proceder a eliminarlo. En VS Code, en el proyecto Bank.Domain proceder a crear la carpeta Models y dentro de esta el archivo BankAccount.cs e introducir el siguiente código: namespace Bank.Domain.Models { public class BankAccount { private readonly string m_customerName; private double m_balance; private BankAccount() { } public BankAccount(string customerName, double balance) { m_customerName = customerName; m_balance = balance; } public string CustomerName { get { return m_customerName; } } public double Balance { get { return m_balance; } } public void Debit(double amount) { if (amount > m_balance) throw new ArgumentOutOfRangeException(\"amount\"); if (amount < 0) throw new ArgumentOutOfRangeException(\"amount\"); m_balance -= amount; } public void Credit(double amount) { if (amount < 0) throw new ArgumentOutOfRangeException(\"amount\"); m_balance += amount; } } } Luego en el proyecto Bank.Domain.Tests añadir un nuevo archivo BanckAccountTests.cs e introducir el siguiente código: using Bank.Domain.Models; using NUnit.Framework; namespace Bank.Domain.Tests { public class BankAccountTests { [Test] public void Debit_WithValidAmount_UpdatesBalance() { // Arrange double beginningBalance = 11.99; double debitAmount = 4.55; double expected = 7.44; BankAccount account = new BankAccount(\"Mr. Bryan Walton\", beginningBalance); // Act account.Debit(debitAmount); // Assert double actual = account.Balance; Assert.AreEqual(expected, actual, 0.001, \"Account not debited correctly\"); } } } En el terminal, ejecutar las pruebas de lo nostruiido hasta el momento: dotnet test --collect:\"XPlat Code Coverage\" Resultado Failed! - Failed: 0, Passed: 1, Skipped: 0, Total: 1, Duration: < 1 ms En el terminal, instalar la herramienta de .Net Sonar Scanner que permitirá conectarse a SonarQube para realizar las pruebas estáticas de la seguridad del código de la aplicación : dotnet tool install -g dotnet-sonarscanner Resultado Puede invocar la herramienta con el comando siguiente: dotnet-sonarscanner La herramienta \"dotnet-sonarscanner\" (versión 'X.X.X') se instaló correctamente En el terminal, ejecutar : dotnet sonarscanner begin /k:\"PROJECT_KEY\" /d:sonar.token=\"TOKEN\" /d:sonar.host.url=\"https://sonarcloud.io\" /o:\"ORGANIZATION\" /d:sonar.cs.opencover.reportsPaths=\"*/*/*/coverage.opencover.xml\" Donde: TOKEN: es el token que previamente se genero en la pagina de Sonar Source ORGANIZATION: es el nombre de la organización generada en Sonar Source PROJECT_KEY: es el nombre de la llave proyecto que previamente se genero en la pagina en Sonar Source En el terminal, ejecutar: dotnet build --no-incremental dotnet test --collect:\"XPlat Code Coverage;Format=opencover\" Ejecutar nuevamente el paso 8 para lo cual se obtendra una respuesta similar a la siguiente: dotnet sonarscanner end /d:sonar.token=\"TOKEN\" En la pagina de Sonar Source verificar el resultado del analisis. Abrir un nuevo navegador de internet o pestaña con la url de su repositorio de Github https://github.com/UPT-FAING-EPIS/nombre_de_su_repositorio, abrir la pestaña con el nombre Settings, en la opción Secrets and Actions, selecionar Actions y hacer click en el botón New Respository Token, en la ventana colocar en Nombre (Name): SONAR_TOKEN y en Secreto (Secret): el valor del token de Sonar Cloud, guardado previamente En el VS Code, proceder a crear la carpeta .github/workflow y dentro de esta crear el archivo sonar.yml con el siguiente contenido, reemplazar los valores ORGANIZATION y PROJECT_KEY con los valores obtenidos de SonarCloud name: Sonar Continuos Integration env: DOTNET_VERSION: '8.x' # la versión de .NET SONAR_ORG: 'ORGANIZATION' # Nombre de la organización de sonar cloud SONAR_PROJECT: 'PROJECT_KEY' # Key ID del proyecto de sonar on: push: branches: [ \"main\" ] workflow_dispatch: jobs: sonarqube: name: Sonarqube Analisys runs-on: ubuntu-latest steps: - uses: actions/checkout@v4 - uses: actions/setup-java@v4 with: distribution: 'temurin' java-version: '17' - name: Configurando la versión de NET uses: actions/setup-dotnet@v4 with: dotnet-version: ${{ env.DOTNET_VERSION }} - name: Instalar Scanner run: dotnet tool install -g dotnet-sonarscanner - name: Ejecutar pruebas run: | dotnet restore dotnet test --collect:\"XPlat Code Coverage;Format=opencover\" dotnet-sonarscanner begin /k:\"${{ env.SONAR_PROJECT }}\" /o:\"${{ env.SONAR_ORG }}\" /d:sonar.login=\"${{ secrets.SONAR_TOKEN }}\" /d:sonar.host.url=\"https://sonarcloud.io\" /d:sonar.cs.opencover.reportsPaths=\"*/*/*/coverage.opencover.xml\" /d:sonar.qualitygate.wait=true dotnet build dotnet-sonarscanner end /d:sonar.login=\"${{ secrets.SONAR_TOKEN }}\" Actividades Encargadas Adicionar un metodos de prueba para verificar el método de crédito. Adjuntar la captura donde se evidencia el incremento del valor de cobertura en SonarCloud en un archivo cobertura.png. Adicionar a la automatizacion la construcción del archivo .nuget y la publicación como paquete en su repositorio de Github Adicionar a la automatizacion la generación del release de la versión 1.0.0 del nuget, debe indicar las modificaciones del paquete en base a los comentarios de los commits realizados"
+  },
+  "disenio.html": {
+    "href": "disenio.html",
+    "title": "Diagrama de Clases - Bank System | Bank App",
+    "summary": "Diagrama de Clases - Bank System classDiagram class BankAccount { -string m_customerName -double m_balance +BankAccount(customerName: string, balance: double) +CustomerName: string +Balance: double +Debit(amount: double): void +Credit(amount: double): void } Descripción de Clases BankAccount Clase que representa una cuenta bancaria con funcionalidades básicas de débito y crédito. Propiedades: CustomerName: Nombre del cliente propietario de la cuenta (solo lectura) Balance: Saldo actual de la cuenta (solo lectura) Métodos: Debit(amount): Debita un monto de la cuenta. Valida que el monto sea positivo y no mayor al saldo. Credit(amount): Acredita un monto a la cuenta. Valida que el monto sea positivo. Validaciones: Los montos negativos lanzan ArgumentOutOfRangeException Los débitos mayores al saldo disponible lanzan ArgumentOutOfRangeException"
+  },
+  "docs/Bank.Domain.Models.BankAccount.html": {
+    "href": "docs/Bank.Domain.Models.BankAccount.html",
+    "title": "Class BankAccount | Bank App",
+    "summary": "Class BankAccount Namespace Bank.Domain.Models Assembly Bank.Domain.dll public class BankAccount Inheritance object BankAccount Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Constructors BankAccount(string, double) public BankAccount(string customerName, double balance) Parameters customerName string balance double Properties Balance public double Balance { get; } Property Value double CustomerName public string CustomerName { get; } Property Value string Methods Credit(double) public void Credit(double amount) Parameters amount double Debit(double) public void Debit(double amount) Parameters amount double"
+  },
+  "docs/Bank.Domain.Models.html": {
+    "href": "docs/Bank.Domain.Models.html",
+    "title": "Namespace Bank.Domain.Models | Bank App",
+    "summary": "Namespace Bank.Domain.Models Classes BankAccount"
+  },
+  "docs/Bank.Domain.Tests.BankAccountTests.html": {
+    "href": "docs/Bank.Domain.Tests.BankAccountTests.html",
+    "title": "Class BankAccountTests | Bank App",
+    "summary": "Class BankAccountTests Namespace Bank.Domain.Tests Assembly Bank.Domain.Tests.dll public class BankAccountTests Inheritance object BankAccountTests Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Methods Credit_WithNegativeAmount_Throws() [Test] public void Credit_WithNegativeAmount_Throws() Credit_WithValidAmount_UpdatesBalance() [Test] public void Credit_WithValidAmount_UpdatesBalance() Debit_WithAmountGreaterThanBalance_Throws() [Test] public void Debit_WithAmountGreaterThanBalance_Throws() Debit_WithNegativeAmount_Throws() [Test] public void Debit_WithNegativeAmount_Throws() Debit_WithValidAmount_UpdatesBalance() [Test] public void Debit_WithValidAmount_UpdatesBalance()"
+  },
+  "docs/Bank.Domain.Tests.html": {
+    "href": "docs/Bank.Domain.Tests.html",
+    "title": "Namespace Bank.Domain.Tests | Bank App",
+    "summary": "Namespace Bank.Domain.Tests Classes BankAccountTests"
+  },
+  "docs/Bank.WebApi.Models.BankAccount.html": {
+    "href": "docs/Bank.WebApi.Models.BankAccount.html",
+    "title": "Class BankAccount | Bank App",
+    "summary": "Class BankAccount Namespace Bank.WebApi.Models Assembly Bank.WebApi.dll public class BankAccount Inheritance object BankAccount Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Constructors BankAccount(string, double) public BankAccount(string customerName, double balance) Parameters customerName string balance double Properties Balance public double Balance { get; } Property Value double CustomerName public string CustomerName { get; } Property Value string Methods Credit(double) public void Credit(double amount) Parameters amount double Debit(double) public void Debit(double amount) Parameters amount double"
+  },
+  "docs/Bank.WebApi.Models.html": {
+    "href": "docs/Bank.WebApi.Models.html",
+    "title": "Namespace Bank.WebApi.Models | Bank App",
+    "summary": "Namespace Bank.WebApi.Models Classes BankAccount"
+  },
+  "docs/Bank.WebApi.Tests.BankAccountTests.html": {
+    "href": "docs/Bank.WebApi.Tests.BankAccountTests.html",
+    "title": "Class BankAccountTests | Bank App",
+    "summary": "Class BankAccountTests Namespace Bank.WebApi.Tests Assembly Bank.WebApi.Tests.dll public class BankAccountTests Inheritance object BankAccountTests Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Methods Debit_WithValidAmount_UpdatesBalance() [Test] public void Debit_WithValidAmount_UpdatesBalance()"
+  },
+  "docs/Bank.WebApi.Tests.Test1.html": {
+    "href": "docs/Bank.WebApi.Tests.Test1.html",
+    "title": "Class Test1 | Bank App",
+    "summary": "Class Test1 Namespace Bank.WebApi.Tests Assembly Bank.WebApi.Tests.dll [TestFixture] public sealed class Test1 Inheritance object Test1 Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.ReferenceEquals(object, object) object.ToString() Methods TestMethod1() [Test] public void TestMethod1()"
+  },
+  "docs/Bank.WebApi.Tests.html": {
+    "href": "docs/Bank.WebApi.Tests.html",
+    "title": "Namespace Bank.WebApi.Tests | Bank App",
+    "summary": "Namespace Bank.WebApi.Tests Classes BankAccountTests Test1"
+  },
+  "docs/getting-started.html": {
+    "href": "docs/getting-started.html",
+    "title": "Getting Started | Bank App",
+    "summary": "Getting Started"
+  },
+  "docs/introduction.html": {
+    "href": "docs/introduction.html",
+    "title": "Introduction | Bank App",
+    "summary": "Introduction"
+  },
+  "index.html": {
+    "href": "index.html",
+    "title": "This is the HOMEPAGE. | Bank App",
+    "summary": "This is the HOMEPAGE. Diagrama de Clases Pruebas Add images to the images folder if the file is referencing an image."
+  }
+}

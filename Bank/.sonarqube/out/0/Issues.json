@@ -1,0 +1,145 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Compilador de Microsoft (R) Visual C#",
+        "version": "4.14.0.0",
+        "fileVersion": "4.14.0-3.25413.5 (b828a8df)",
+        "semanticVersion": "4.14.0",
+        "language": "es-ES"
+      },
+      "results": [
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento campo \"m_customerName\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el campo como un valor que acepta valores NULL.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Windows/System32/bank/Bank.Domain/Models/BankAccount.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 17,
+                  "endLine": 7,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Windows/System32/bank/Bank.Domain/Models/BankAccount.cs",
+                "region": {
+                  "startLine": 5,
+                  "startColumn": 33,
+                  "endLine": 5,
+                  "endColumn": 47
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1507",
+          "level": "note",
+          "message": "Use nameof en lugar del literal de cadena \"amount\"",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Windows/System32/bank/Bank.Domain/Models/BankAccount.cs",
+                "region": {
+                  "startLine": 26,
+                  "startColumn": 55,
+                  "endLine": 26,
+                  "endColumn": 63
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1507",
+          "level": "note",
+          "message": "Use nameof en lugar del literal de cadena \"amount\"",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Windows/System32/bank/Bank.Domain/Models/BankAccount.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 55,
+                  "endLine": 18,
+                  "endColumn": 63
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1507",
+          "level": "note",
+          "message": "Use nameof en lugar del literal de cadena \"amount\"",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Windows/System32/bank/Bank.Domain/Models/BankAccount.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 55,
+                  "endLine": 20,
+                  "endColumn": 63
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        }
+      ],
+      "rules": {
+        "CA1507": {
+          "id": "CA1507",
+          "shortDescription": "Use nameof para expresar nombres de símbolos",
+          "fullDescription": "El uso de nameof ayuda a mantener el código válido durante la refactorización.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1507",
+          "properties": {
+            "category": "Maintainability",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "CS8618": {
+          "id": "CS8618",
+          "shortDescription": "Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required\" o declararlo como un valor que acepta valores NULL.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8618)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

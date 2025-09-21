@@ -1,0 +1,7 @@
+organization=krcrimson
+projectKey=krcrimson_apibank
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.67173
+dashboardUrl=https://sonarcloud.io/dashboard?id=krcrimson_apibank
+ceTaskId=AZlA6ukhUdfSDCtXKtXB
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZlA6ukhUdfSDCtXKtXB

@@ -1,0 +1,1 @@
+YRCC:\Windows\System32\Bank\Bank.Domain.Tests\Bank.Domain.Tests.csproj¢net8.0òCSharp12

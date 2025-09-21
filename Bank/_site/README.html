@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>SESION DE LABORATORIO N&#176; 01: PRUEBAS ESTATICAS DE SEGURIDAD DE APLICACIONES CON SONARQUBE | Bank App </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="SESION DE LABORATORIO N&#176; 01: PRUEBAS ESTATICAS DE SEGURIDAD DE APLICACIONES CON SONARQUBE | Bank App ">
+      
+      
+      <link rel="icon" href="favicon.ico">
+      <link rel="stylesheet" href="public/docfx.min.css">
+      <link rel="stylesheet" href="public/main.css">
+      <meta name="docfx:navrel" content="toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/UPT-FAING-EPIS/lab-2025-ii-si784-u1-02-csharp-KrCrimson/blob/main/bank/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="index.html">
+            <img id="logo" class="svg" src="logo.svg" alt="Bank.App">
+            Bank.App
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+
+<p><a href="https://classroom.github.com/a/qlAtkCwb"><img src="https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg" alt="Review Assignment Due Date"></a>
+<a href="https://classroom.github.com/open-in-codespaces?assignment_repo_id=20343525"><img src="https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg" alt="Open in Codespaces"></a></p>
+<h1 id="sesion-de-laboratorio-n-01-pruebas-estaticas-de-seguridad-de-aplicaciones-con-sonarqube">SESION DE LABORATORIO N° 01: PRUEBAS ESTATICAS DE SEGURIDAD DE APLICACIONES CON SONARQUBE</h1>
+<h2 id="objetivos">OBJETIVOS</h2>
+<ul>
+<li>Comprender el funcionamiento de las pruebas estaticas de seguridad de còdigo de las aplicaciones que desarrollamos utilizando SonarQube.</li>
+</ul>
+<h2 id="requerimientos">REQUERIMIENTOS</h2>
+<ul>
+<li>Conocimientos:
+<ul>
+<li>Conocimientos básicos de Bash (powershell).</li>
+<li>Conocimientos básicos de Contenedores (Docker).</li>
+</ul>
+</li>
+<li>Hardware:
+<ul>
+<li>Virtualization activada en el BIOS..</li>
+<li>CPU SLAT-capable feature.</li>
+<li>Al menos 4GB de RAM.</li>
+</ul>
+</li>
+<li>Software:
+<ul>
+<li>Windows 10 64bit: Pro, Enterprise o Education (1607 Anniversary Update, Build 14393 o Superior)</li>
+<li>Docker Desktop</li>
+<li>Powershell versión 7.x</li>
+<li>Net 8 o superior</li>
+<li>Visual Studio Code</li>
+</ul>
+</li>
+</ul>
+<h2 id="consideraciones-iniciales">CONSIDERACIONES INICIALES</h2>
+<ul>
+<li>Clonar el repositorio mediante git para tener los recursos necesarios</li>
+<li>Tener una cuenta de Github valida.</li>
+</ul>
+<h2 id="desarrollo">DESARROLLO</h2>
+<h3 id="parte-i-configuración-de-la-herramienta-de-pruebas-estaticas-de-seguridad-de-la-aplicación">Parte I: Configuración de la herramienta de Pruebas Estaticas de Seguridad de la Aplicación</h3>
+<ol>
+<li><p>Ingrear a la pagina de SonarCloud (<a href="https://www.sonarsource.com/products/sonarcloud/">https://www.sonarsource.com/products/sonarcloud/</a>), iniciar sesión con su cuenta de Github.</p>
+</li>
+<li><p>Ingresar a la opción My Account
+<img src="https://github.com/UPT-FAING-EPIS/lab_calidad_01/assets/10199939/bd49c592-47f5-4767-9f15-c56ad6802818" alt="image"></p>
+</li>
+<li><p>Generar un nuevo token con el nombre que desee, luego de generar el token, guarde el resultado en algún archivo o aplicación de notas. Debido a que se utilizará
+<img src="https://github.com/UPT-FAING-EPIS/lab_calidad_01/assets/10199939/75941062-40f0-4689-8c91-6603ced490a3" alt="image"></p>
+</li>
+<li><p>En el navegador, ingresar a la url <a href="https://sonarcloud.io/projects/create">https://sonarcloud.io/projects/create</a>, para generar un nuevo proyecto con el nombre apibank, apunte el nombre del Project Key, que se utilizara mas adelante, luego dar click en el boton next.
+<img src="https://github.com/user-attachments/assets/95819e23-6dcf-4ca4-800d-7bfe0f686bf3" alt="image"></p>
+</li>
+<li><p>En el navegador, finalizar la creación del proyecto, haciendo click en la opción Previous Version, y luego en el boton Create Project
+<img src="https://github.com/user-attachments/assets/7f8a6d86-f14d-4b49-882e-0d0bb35d5069" alt="image"></p>
+</li>
+</ol>
+<h3 id="parte-ii-creación-de-la-aplicación">Parte II: Creación de la aplicación</h3>
+<ol>
+<li>Iniciar la aplicación Powershell o Windows Terminal en modo administrador</li>
+<li>Ejecutar el siguiente comando para crear una nueva solución</li>
+</ol>
+<pre><code>dotnet new sln -o Bank
+</code></pre>
+<ol start="3">
+<li>Acceder a la solución creada y ejecutar el siguiente comando para crear una nueva libreria de clases y adicionarla a la solución actual.</li>
+</ol>
+<pre><code>cd Bank
+dotnet new classlib -o Bank.Domain
+dotnet sln add ./Bank.Domain/Bank.Domain.csproj
+</code></pre>
+<ol start="4">
+<li>Ejecutar el siguiente comando para crear un nuevo proyecto de pruebas y adicionarla a la solución actual</li>
+</ol>
+<pre><code>dotnet new mstest -o Bank.Domain.Tests
+dotnet sln add ./Bank.Domain.Tests/Bank.Domain.Tests.csproj
+dotnet add ./Bank.Domain.Tests/Bank.Domain.Tests.csproj reference ./Bank.Domain/Bank.Domain.csproj
+</code></pre>
+<ol start="5">
+<li><p>Iniciar Visual Studio Code (VS Code) abriendo el folder de la solución como proyecto. En el proyecto Bank.Domain, si existe un archivo Class1.cs proceder a eliminarlo. Asimismo en el proyecto Bank.Domain.Tests si existiese un archivo UnitTest1.cs, también proceder a eliminarlo.</p>
+</li>
+<li><p>En VS Code, en el proyecto Bank.Domain proceder a crear la carpeta <code>Models</code> y dentro de esta el archivo BankAccount.cs e introducir el siguiente código:</p>
+</li>
+</ol>
+<pre><code class="lang-C#">namespace Bank.Domain.Models
+{
+    public class BankAccount
+    {
+        private readonly string m_customerName;
+        private double m_balance;
+        private BankAccount() { }
+        public BankAccount(string customerName, double balance)
+        {
+            m_customerName = customerName;
+            m_balance = balance;
+        }
+        public string CustomerName { get { return m_customerName; } }
+        public double Balance { get { return m_balance; }  }
+        public void Debit(double amount)
+        {
+            if (amount &gt; m_balance)
+                throw new ArgumentOutOfRangeException(&quot;amount&quot;);
+            if (amount &lt; 0)
+                throw new ArgumentOutOfRangeException(&quot;amount&quot;);
+            m_balance -= amount;
+        }
+        public void Credit(double amount)
+        {
+            if (amount &lt; 0)
+                throw new ArgumentOutOfRangeException(&quot;amount&quot;);
+            m_balance += amount;
+        }
+    }
+}
+</code></pre>
+<ol start="7">
+<li>Luego en el proyecto Bank.Domain.Tests añadir un nuevo archivo BanckAccountTests.cs e introducir el siguiente código:</li>
+</ol>
+<pre><code class="lang-C#">using Bank.Domain.Models;
+using NUnit.Framework;
+
+namespace Bank.Domain.Tests
+{
+    public class BankAccountTests
+    {
+        [Test]
+        public void Debit_WithValidAmount_UpdatesBalance()
+        {
+            // Arrange
+            double beginningBalance = 11.99;
+            double debitAmount = 4.55;
+            double expected = 7.44;
+            BankAccount account = new BankAccount(&quot;Mr. Bryan Walton&quot;, beginningBalance);
+            // Act
+            account.Debit(debitAmount);
+            // Assert
+            double actual = account.Balance;
+            Assert.AreEqual(expected, actual, 0.001, &quot;Account not debited correctly&quot;);
+        }
+    }
+}
+</code></pre>
+<ol start="8">
+<li>En el terminal, ejecutar las pruebas de lo nostruiido hasta el momento:</li>
+</ol>
+<pre><code class="lang-Bash">dotnet test --collect:&quot;XPlat Code Coverage&quot;
+</code></pre>
+<blockquote>
+<p>Resultado</p>
+</blockquote>
+<pre><code class="lang-Bash">Failed!  - Failed:     0, Passed:     1, Skipped:     0, Total:     1, Duration: &lt; 1 ms
+</code></pre>
+<ol start="9">
+<li>En el terminal, instalar la herramienta de .Net Sonar Scanner que permitirá conectarse a SonarQube para realizar las pruebas estáticas de la seguridad del código de la aplicación :</li>
+</ol>
+<pre><code class="lang-Bash">dotnet tool install -g dotnet-sonarscanner
+</code></pre>
+<blockquote>
+<p>Resultado</p>
+</blockquote>
+<pre><code class="lang-Bash">Puede invocar la herramienta con el comando siguiente: dotnet-sonarscanner
+La herramienta &quot;dotnet-sonarscanner&quot; (versión 'X.X.X') se instaló correctamente
+</code></pre>
+<ol start="10">
+<li>En el terminal, ejecutar :</li>
+</ol>
+<pre><code class="lang-Bash">dotnet sonarscanner begin /k:&quot;PROJECT_KEY&quot; /d:sonar.token=&quot;TOKEN&quot; /d:sonar.host.url=&quot;https://sonarcloud.io&quot; /o:&quot;ORGANIZATION&quot; /d:sonar.cs.opencover.reportsPaths=&quot;*/*/*/coverage.opencover.xml&quot;
+</code></pre>
+<blockquote>
+<p>Donde:</p>
+<ul>
+<li>TOKEN: es el token que previamente se genero en la pagina de Sonar Source</li>
+<li>ORGANIZATION: es el nombre de la organización generada en Sonar Source</li>
+<li>PROJECT_KEY: es el nombre de la llave proyecto que previamente se genero en la pagina en Sonar Source</li>
+</ul>
+</blockquote>
+<ol start="12">
+<li>En el terminal, ejecutar:</li>
+</ol>
+<pre><code class="lang-Bash">dotnet build --no-incremental
+dotnet test --collect:&quot;XPlat Code Coverage;Format=opencover&quot;
+</code></pre>
+<ol start="13">
+<li>Ejecutar nuevamente el paso 8 para lo cual se obtendra una respuesta similar a la siguiente:</li>
+</ol>
+<pre><code class="lang-Bash">dotnet sonarscanner end /d:sonar.token=&quot;TOKEN&quot;
+</code></pre>
+<ol start="14">
+<li>En la pagina de Sonar Source verificar el resultado del analisis.</li>
+</ol>
+<p><img src="https://github.com/UPT-FAING-EPIS/lab_calidad_01/assets/10199939/4e4892d3-71e2-4437-9713-a270ebf61b06" alt="image"></p>
+<ol start="15">
+<li>Abrir un nuevo navegador de internet o pestaña con la url de su repositorio de Github <code>https://github.com/UPT-FAING-EPIS/nombre_de_su_repositorio</code>, abrir la pestaña con el nombre <em>Settings</em>, en la opción <em>Secrets and Actions</em>, selecionar Actions y hacer click en el botón <em>New Respository Token</em>, en la ventana colocar en Nombre (Name): SONAR_TOKEN y en Secreto (Secret): el valor del token de Sonar Cloud, guardado previamente</li>
+</ol>
+<p><img src="https://github.com/user-attachments/assets/cf0b874f-7eb9-4888-a37d-9a975316d53f" alt="image"></p>
+<ol start="16">
+<li>En el VS Code, proceder a crear la carpeta .github/workflow y dentro de esta crear el archivo sonar.yml con el siguiente contenido, reemplazar los valores ORGANIZATION y PROJECT_KEY con los valores obtenidos de SonarCloud</li>
+</ol>
+<pre><code class="lang-Yaml">name: Sonar Continuos Integration
+env:
+  DOTNET_VERSION: '8.x'                     # la versión de .NET
+  SONAR_ORG: 'ORGANIZATION'                    # Nombre de la organización de sonar cloud
+  SONAR_PROJECT: 'PROJECT_KEY'        # Key ID del proyecto de sonar
+on:
+  push:
+    branches: [ &quot;main&quot; ]
+  workflow_dispatch:
+
+jobs:
+  sonarqube:
+    name: Sonarqube Analisys
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Configurando la versión de NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Instalar Scanner
+        run: dotnet tool install -g dotnet-sonarscanner
+      - name: Ejecutar pruebas
+        run: |
+          dotnet restore 
+          dotnet test --collect:&quot;XPlat Code Coverage;Format=opencover&quot;
+          dotnet-sonarscanner begin /k:&quot;${{ env.SONAR_PROJECT }}&quot; /o:&quot;${{ env.SONAR_ORG }}&quot; /d:sonar.login=&quot;${{ secrets.SONAR_TOKEN }}&quot; /d:sonar.host.url=&quot;https://sonarcloud.io&quot; /d:sonar.cs.opencover.reportsPaths=&quot;*/*/*/coverage.opencover.xml&quot; /d:sonar.qualitygate.wait=true
+          dotnet build
+          dotnet-sonarscanner end /d:sonar.login=&quot;${{ secrets.SONAR_TOKEN }}&quot;
+</code></pre>
+<hr>
+<h2 id="actividades-encargadas">Actividades Encargadas</h2>
+<ol>
+<li>Adicionar un metodos de prueba para verificar el método de crédito.</li>
+<li>Adjuntar la captura donde se evidencia el incremento del valor de cobertura en SonarCloud en un archivo cobertura.png.</li>
+<li>Adicionar a la automatizacion la construcción del archivo .nuget y la publicación como paquete en su repositorio de Github</li>
+<li>Adicionar a la automatizacion la generación del release de la versión 1.0.0 del nuget, debe indicar las modificaciones del paquete en base a los comentarios de los commits realizados</li>
+</ol>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/UPT-FAING-EPIS/lab-2025-ii-si784-u1-02-csharp-KrCrimson/blob/main/bank/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

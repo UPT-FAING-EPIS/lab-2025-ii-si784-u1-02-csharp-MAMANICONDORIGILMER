@@ -1,0 +1,126 @@
+name: Release Version
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 1.0.0)'
+        required: true
+        type: string
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Para obtener todo el historial de commits
+          
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+          
+      - name: Determine version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          else
+            VERSION=${GITHUB_REF#refs/tags/v}
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version to release: $VERSION"
+          
+      - name: Update version in project file
+        run: |
+          cd Bank
+          sed -i "s/<Version>.*<\/Version>/<Version>${{ steps.version.outputs.version }}<\/Version>/" Bank.Domain/Bank.Domain.csproj
+          
+      - name: Restore dependencies
+        run: dotnet restore bank/Bank.sln
+          
+      - name: Build solution
+        run: dotnet build bank/Bank.sln --configuration Release --no-restore
+          
+      - name: Run tests
+        run: dotnet test bank/Bank.sln --configuration Release --no-build --collect:"XPlat Code Coverage"
+          
+      - name: Pack NuGet package
+        run: dotnet pack bank/Bank.Domain/Bank.Domain.csproj --configuration Release --no-build --output ./bank/release-packages
+          
+      - name: Generate changelog
+        id: changelog
+        working-directory: bank
+        run: |
+          # Obtener commits desde el último tag
+          LAST_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          if [ -z "$LAST_TAG" ]; then
+            COMMITS=$(git log --pretty=format:"- %s (%h)" --no-merges)
+          else
+            COMMITS=$(git log ${LAST_TAG}..HEAD --pretty=format:"- %s (%h)" --no-merges)
+          fi
+          
+          # Crear changelog
+          CHANGELOG="## Cambios en v${{ steps.version.outputs.version }}
+          
+          ### Nuevas funcionalidades y mejoras:
+          $COMMITS
+          
+          ### Información técnica:
+          - **Pruebas unitarias**: ✅ Todas las pruebas pasan
+          - **Cobertura de código**: Incluida en los artefactos
+          - **Análisis estático**: Procesado con SonarCloud
+          - **Seguridad**: Validado con Snyk
+          
+          ### Archivos incluidos:
+          - \`Bank.Domain.${{ steps.version.outputs.version }}.nupkg\` - Paquete NuGet principal
+          - Reportes de cobertura y análisis de calidad"
+          
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          
+      - name: Create Release
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          release_name: Release v${{ steps.version.outputs.version }}
+          body: ${{ steps.changelog.outputs.changelog }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Upload NuGet package to release
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./bank/release-packages/Bank.Domain.${{ steps.version.outputs.version }}.nupkg
+          asset_name: Bank.Domain.${{ steps.version.outputs.version }}.nupkg
+          asset_content_type: application/zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Publish to GitHub Packages
+        working-directory: bank
+        run: dotnet nuget push ./release-packages/*.nupkg --source https://nuget.pkg.github.com/UPT-FAING-EPIS/index.json --api-key ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-v${{ steps.version.outputs.version }}
+          path: |
+            bank/release-packages/
+            bank/*/*/*/coverage.cobertura.xml
+          retention-days: 365
